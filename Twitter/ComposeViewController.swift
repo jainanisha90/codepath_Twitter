@@ -21,7 +21,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         tweetTextView.delegate = self
-        tweetTextView.text = "Type your tweet here..."
+        tweetTextView.text = "Type your tweet"
         tweetTextView.textColor = .lightGray
         tweetTextView.becomeFirstResponder()
         
@@ -42,7 +42,6 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         if let tweetMessage = tweetTextView.text {
             MBProgressHUD.showAdded(to: self.view, animated: true)
             TwitterClient.sharedInstance.newTweet(tweetMessage: tweetMessage, success: {
-                print("tweeted: ")
                 MBProgressHUD.hide(for: self.view, animated: true)
                 
                 NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
@@ -80,7 +79,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         // Set placeholder if text is empty
         if textView.text.isEmpty {
-            textView.text = "Type your tweet here..."
+            textView.text = "Type your tweet"
             textView.textColor = .lightGray
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         }

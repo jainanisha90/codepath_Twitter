@@ -50,7 +50,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     func currentAccount(success: @escaping (User) -> (), failure: @escaping (Error) -> ()) {
         self.get("1.1/account/verify_credentials.json", parameters: nil, success:
             { (operation: URLSessionDataTask!, response: Any!) -> Void in
-                // print("user:", response)
                 let user = User(dictionary: response as! NSDictionary)
                 success(user)
                 User.currentUser = user
@@ -65,13 +64,9 @@ class TwitterClient: BDBOAuth1SessionManager {
     func homeTimelineWithParams(params: NSDictionary?, completion: @escaping (_ tweets: [Tweet]?, _ error: Error?) -> ()) {
         get("1.1/statuses/home_timeline.json", parameters: params,
             success: { (operation: URLSessionDataTask!, response: Any!) -> Void in
-                // print("home timeline:", response)
                 let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
                 completion(tweets, nil)
-                print("hometimeline: ", response)
-                //                for tweet in tweets {
-                //                    print("text: \(tweet.text!) created at \(tweet.createdAt!)")
-                //                }
+                //print("hometimeline: ", response)
         }, failure: { (operation: URLSessionDataTask!, error: Error!) -> Void in
             print("Error getting home timeline")
             completion(nil, error)

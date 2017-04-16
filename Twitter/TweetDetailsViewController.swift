@@ -58,6 +58,7 @@ class TweetDetailsViewController: UIViewController {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         
         TwitterClient.sharedInstance.retweet(tweetId: tweetId, success: {
+            // Updating local retweet count when retweet API return success
             self.retweetCountLabel.text =  String(describing: (self.tweet!.retweetCount! + 1))
             MBProgressHUD.hide(for: self.view, animated: true)
             NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
@@ -74,6 +75,7 @@ class TweetDetailsViewController: UIViewController {
         isFavorite.isSelected = !(isFavorite.isSelected)
         if isFavorite.isSelected {
             TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {
+                // Updating local favorite count when favorite API return success
                 self.tweet?.favoriteCount = self.tweet!.favoriteCount! + 1
                 self.favoriteCountLabel.text =  String(describing: self.tweet!.favoriteCount!)
                 NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)

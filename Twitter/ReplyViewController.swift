@@ -75,7 +75,7 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
             let tweetAuthor = (tweet?.user?.screenName)!
             let tweetId = tweet?.tweetId!
             let tweetMessage = "@\(tweetAuthor) \(text)"
-            print("tweetMessage: \(tweetMessage), tweetId: \(tweetId!)")
+            //print("tweetMessage: \(tweetMessage), tweetId: \(tweetId!)")
             
             MBProgressHUD.showAdded(to: self.view, animated: true)
             

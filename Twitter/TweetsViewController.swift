@@ -96,6 +96,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         print("tweetID: \(tweetId)")
         if favorite {
             TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {
+                // Updating local favorite count
                 tweet.favorited = favorite
                 tweet.favoriteCount! += 1
             },

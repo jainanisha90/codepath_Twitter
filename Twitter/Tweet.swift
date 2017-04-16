@@ -64,7 +64,6 @@ class Tweet: NSObject {
         if (weeks > 0) {
             timeSinceTweet = "\(weeks)w"
         }
-        //print("timeSinceTweet ",timeSinceTweet)
         return timeSinceTweet
     }
     
