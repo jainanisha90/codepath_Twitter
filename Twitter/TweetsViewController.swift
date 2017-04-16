@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import MBProgressHUD
+
+let reloadHomeTimeline = Notification.Name("reloadHomeTimeline")
 
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
     var tweets: [Tweet]!
+    var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,15 +26,33 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
-        TwitterClient.sharedInstance.homeTimelineWithParams(params: nil) { (tweets, error) in
-            self.tweets = tweets
-            self.tableView.reloadData()
+        refreshControl.addTarget(self, action: #selector(loadHomeTimelineData), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        loadHomeTimelineData()
+        
+        // Adding listener to reload HomeTimeline
+        NotificationCenter.default.addObserver(forName: reloadHomeTimeline, object: nil, queue: OperationQueue.main) { (notification) in
+            self.refreshControl.beginRefreshing()
+            self.loadHomeTimelineData()
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func loadHomeTimelineData() {
+        TwitterClient.sharedInstance.homeTimelineWithParams(params: nil) { (tweets, error) in
+            self.tweets = tweets
+            self.tableView.reloadData()
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.refreshControl.endRefreshing()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

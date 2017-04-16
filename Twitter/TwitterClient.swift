@@ -77,6 +77,18 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    func newTweet(tweetMessage: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let params = ["status": tweetMessage]
+        post("1.1/statuses/update.json", parameters: params,
+             success: { (operation: URLSessionDataTask, response: Any) in
+            success()
+            //print("newTweet response: ", response)
+        }) { (urlSessionDataTask, error) in
+            print("Falied to post a tweet")
+            failure(error)
+        }
+    }
+    
     func handleOpenURL(url: URL) {
         fetchAccessToken(withPath: "oauth/access_token",
                          method: "POST",
