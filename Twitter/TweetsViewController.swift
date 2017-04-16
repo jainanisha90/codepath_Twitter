@@ -69,28 +69,32 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tweetCell(tweetCell: TweetCell, onReply reply: String?) {
-        let indexPath = tableView.indexPath(for: tweetCell)
-        let tweet = tweets[(indexPath?.row)!]
-        let tweetAuthor = (tweet.user?.screenName)!
-        let tweetId = tweet.tweetId!
-        let tweetMessage = "@\(tweetAuthor) \(tweet.text!)"
-        print("tweetMessage: ", tweetMessage)
-        self.performSegue(withIdentifier: "replySegue", sender: self)
-
-        
-        TwitterClient.sharedInstance.reply(tweetMessage: tweetMessage, tweetId: tweetId, success: {
-                    }) { (error) in
-            print("Failed to reply", error)
-        }
+        self.performSegue(withIdentifier: "replySegue", sender: tweetCell)
     }
 
+    func tweetCell(tweetCell: TweetCell, onRetweet retweet: String?) {
+        //
+    }
+    
+    func tweetCell(tweetCell: TweetCell, onFavorite favorite: Bool) {
+        //
+    }
     @IBAction func onLogout(_ sender: Any) {
         TwitterClient.sharedInstance.logout()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "replySegue" {
+            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
+            let tweet = tweets[(indexPath?.row)!]
+            
+            let navigationController = segue.destination as! UINavigationController
+            let rvc = navigationController.topViewController as! ReplyViewController
+            rvc.tweet = tweet
+            
+        } else if segue.identifier == "tweetDetailsSegue" {
+            
+        }
     }
  
 
