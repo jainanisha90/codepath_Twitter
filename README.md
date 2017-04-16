@@ -23,17 +23,18 @@ The following **optional** features are implemented:
 - [x] Retweeting and favoriting should increment the retweet and favorite count.
 - [ ] User should be able to unretweet and should decrement the retweet count.
 - [x] User should be able to unfavorite and should decrement the favorite count.
-- [ ] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
+- [x] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
 - [ ] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] Created placeholder text feature for UITextView in reply/new tweet.  
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. Segue push is deprecated so is there any other similar option available?
+2. If a modally presented view controller needs navigation bar then should we always embed it in a navigation controller 
+
 
 ## Video Walkthrough
 
