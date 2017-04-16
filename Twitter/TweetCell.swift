@@ -7,6 +7,11 @@
 //
 
 import UIKit
+@objc protocol TweetCellDelegate {
+    @objc optional func tweetCell(tweetCell:TweetCell, onReply reply: String?)
+    @objc optional func tweetCell(tweetCell:TweetCell, onRetweet retweet: String?)
+    @objc optional func tweetCell(tweetCell:TweetCell, onFavorite favorite: Bool)
+}
 
 class TweetCell: UITableViewCell {
 
@@ -15,6 +20,9 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var createdAtLabel: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
+    
+    weak var delegate: TweetCellDelegate?
     
     var tweet : Tweet! {
         didSet {
@@ -28,12 +36,13 @@ class TweetCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         // Initialization code
         profileImageView.layer.cornerRadius = 3
         profileImageView.clipsToBounds = true
         
-        
-
+        favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState.normal)
+        favoriteButton.setImage(#imageLiteral(resourceName: "favoriteSelected"), for: UIControlState.selected)
     }
     
     override func layoutSubviews() {
@@ -41,7 +50,20 @@ class TweetCell: UITableViewCell {
         
     }
 
+    @IBAction func onReplyButton(_ sender: Any) {
+        delegate?.tweetCell?(tweetCell: self, onReply: nil)
+    }
 
+    @IBAction func onRetweetButton(_ sender: Any) {
+        delegate?.tweetCell?(tweetCell: self, onRetweet: nil)
+    }
+
+    @IBAction func onFavoriteButton(_ sender: Any) {
+        let isFavorite = sender as! UIButton
+        isFavorite.isSelected = !(isFavorite.isSelected)
+        delegate?.tweetCell?(tweetCell: self, onFavorite: isFavorite.isSelected)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

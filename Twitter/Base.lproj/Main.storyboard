@@ -100,55 +100,68 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Reply" translatesAutoresizingMaskIntoConstraints="NO" id="Gpv-4t-tGS">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pqu-5T-ywB">
                                                     <rect key="frame" x="80" y="67" width="16" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="t4h-dr-HyJ"/>
-                                                        <constraint firstAttribute="width" constant="16" id="uoV-U1-2dG"/>
+                                                        <constraint firstAttribute="height" constant="16" id="XbT-np-zOB"/>
+                                                        <constraint firstAttribute="width" constant="16" id="s1Y-kw-8XY"/>
                                                     </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Retweet" translatesAutoresizingMaskIntoConstraints="NO" id="nMT-Y6-HzZ">
+                                                    <state key="normal" title="Reply" image="reply"/>
+                                                    <connections>
+                                                        <action selector="onReplyButton:" destination="oXz-SH-jjk" eventType="touchUpInside" id="eBp-uJ-kjc"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PfJ-Vh-Z75">
                                                     <rect key="frame" x="136" y="67" width="16" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="14X-77-6rG"/>
-                                                        <constraint firstAttribute="width" constant="16" id="43h-Qg-PzY"/>
+                                                        <constraint firstAttribute="height" constant="16" id="A6K-uB-YGx"/>
+                                                        <constraint firstAttribute="width" constant="16" id="dv5-GD-9Lq"/>
                                                     </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Favorite" translatesAutoresizingMaskIntoConstraints="NO" id="U4N-Vc-Hoq">
+                                                    <state key="normal" title="Retweet" image="retweet"/>
+                                                    <connections>
+                                                        <action selector="onRetweetButton:" destination="oXz-SH-jjk" eventType="touchUpInside" id="eqN-5j-I47"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="djY-vo-drO">
                                                     <rect key="frame" x="192" y="67" width="16" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="2M7-MF-LUj"/>
-                                                        <constraint firstAttribute="width" constant="16" id="hcK-Rj-RpT"/>
+                                                        <constraint firstAttribute="width" constant="16" id="C6k-pz-Prg"/>
+                                                        <constraint firstAttribute="height" constant="16" id="yqX-q0-JZE"/>
                                                     </constraints>
-                                                </imageView>
+                                                    <state key="normal" title="Favorite" image="favorite"/>
+                                                    <connections>
+                                                        <action selector="onFavoriteButton:" destination="oXz-SH-jjk" eventType="touchUpInside" id="g8N-xm-N5t"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="U4N-Vc-Hoq" firstAttribute="top" secondItem="Gpv-4t-tGS" secondAttribute="top" id="1Uu-NF-zv6"/>
                                                 <constraint firstItem="zhl-Vz-8rY" firstAttribute="baseline" secondItem="GuU-GB-L2s" secondAttribute="baseline" id="2NM-N6-iAG"/>
-                                                <constraint firstItem="U4N-Vc-Hoq" firstAttribute="leading" secondItem="nMT-Y6-HzZ" secondAttribute="trailing" constant="40" id="3vY-nT-fVU"/>
                                                 <constraint firstItem="NSE-Th-kD0" firstAttribute="leading" secondItem="x9Y-Jt-Yaz" secondAttribute="trailing" constant="8" id="6ve-Tk-gnt"/>
-                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Gpv-4t-tGS" secondAttribute="bottom" constant="8" id="79R-PZ-qWJ"/>
                                                 <constraint firstItem="GuU-GB-L2s" firstAttribute="leading" secondItem="x9Y-Jt-Yaz" secondAttribute="trailing" constant="8" id="87H-7v-oVt"/>
                                                 <constraint firstItem="x9Y-Jt-Yaz" firstAttribute="top" secondItem="3Xg-hg-f7z" secondAttribute="bottom" constant="4" id="A5t-rs-OtO"/>
                                                 <constraint firstAttribute="trailing" secondItem="NSE-Th-kD0" secondAttribute="trailing" constant="8" id="DC3-Ri-iz9"/>
-                                                <constraint firstItem="nMT-Y6-HzZ" firstAttribute="top" secondItem="Gpv-4t-tGS" secondAttribute="top" id="EUE-R7-47K"/>
-                                                <constraint firstItem="nMT-Y6-HzZ" firstAttribute="leading" secondItem="Gpv-4t-tGS" secondAttribute="trailing" constant="40" id="FH9-VB-HZc"/>
+                                                <constraint firstItem="PfJ-Vh-Z75" firstAttribute="leading" secondItem="pqu-5T-ywB" secondAttribute="trailing" constant="40" id="Fsz-rA-YkZ"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="x9Y-Jt-Yaz" secondAttribute="bottom" constant="8" id="LRO-7e-mMJ"/>
-                                                <constraint firstItem="Gpv-4t-tGS" firstAttribute="top" secondItem="NSE-Th-kD0" secondAttribute="bottom" constant="8" id="PZR-5T-ePh"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pqu-5T-ywB" secondAttribute="bottom" constant="8" id="Oye-xi-rrN"/>
                                                 <constraint firstAttribute="trailing" secondItem="t7B-Uk-yeY" secondAttribute="trailing" constant="8" id="VmS-0C-lE1"/>
-                                                <constraint firstItem="Gpv-4t-tGS" firstAttribute="leading" secondItem="NSE-Th-kD0" secondAttribute="leading" id="YcW-u5-rOq"/>
+                                                <constraint firstItem="djY-vo-drO" firstAttribute="leading" secondItem="PfJ-Vh-Z75" secondAttribute="trailing" constant="40" id="Vxx-Pz-8kl"/>
+                                                <constraint firstItem="djY-vo-drO" firstAttribute="top" secondItem="pqu-5T-ywB" secondAttribute="top" id="a7E-Hd-byq"/>
                                                 <constraint firstItem="t7B-Uk-yeY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zhl-Vz-8rY" secondAttribute="trailing" constant="8" id="bKs-jg-HjD"/>
                                                 <constraint firstItem="t7B-Uk-yeY" firstAttribute="baseline" secondItem="GuU-GB-L2s" secondAttribute="baseline" id="bj4-Nw-50i"/>
+                                                <constraint firstItem="pqu-5T-ywB" firstAttribute="leading" secondItem="NSE-Th-kD0" secondAttribute="leading" id="fBE-RP-V7n"/>
                                                 <constraint firstItem="3Xg-hg-f7z" firstAttribute="top" secondItem="oIW-Fn-N2K" secondAttribute="top" constant="2" id="jJm-2S-eqG"/>
                                                 <constraint firstItem="x9Y-Jt-Yaz" firstAttribute="leading" secondItem="oIW-Fn-N2K" secondAttribute="leading" constant="8" id="mxp-vj-gom"/>
+                                                <constraint firstItem="PfJ-Vh-Z75" firstAttribute="top" secondItem="pqu-5T-ywB" secondAttribute="top" id="nsc-MX-dG5"/>
                                                 <constraint firstItem="NSE-Th-kD0" firstAttribute="top" secondItem="GuU-GB-L2s" secondAttribute="bottom" constant="4" id="tTW-ki-c6u"/>
                                                 <constraint firstItem="GuU-GB-L2s" firstAttribute="top" secondItem="3Xg-hg-f7z" secondAttribute="bottom" constant="4" id="tuE-OA-tk1"/>
                                                 <constraint firstItem="3Xg-hg-f7z" firstAttribute="leading" secondItem="oIW-Fn-N2K" secondAttribute="leading" constant="20" id="v1Q-GO-tNV"/>
                                                 <constraint firstItem="zhl-Vz-8rY" firstAttribute="leading" secondItem="GuU-GB-L2s" secondAttribute="trailing" constant="4" id="v9u-Cg-1mT"/>
+                                                <constraint firstItem="pqu-5T-ywB" firstAttribute="top" secondItem="NSE-Th-kD0" secondAttribute="bottom" constant="8" id="wSN-ME-T49"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="createdAtLabel" destination="t7B-Uk-yeY" id="9IZ-TQ-uJu"/>
+                                            <outlet property="favoriteButton" destination="djY-vo-drO" id="xR6-o9-733"/>
                                             <outlet property="postTextLabel" destination="NSE-Th-kD0" id="Dyn-f9-CXJ"/>
                                             <outlet property="profileImageView" destination="x9Y-Jt-Yaz" id="Ujx-RM-Usy"/>
                                             <outlet property="screenNameLabel" destination="zhl-Vz-8rY" id="kHu-l2-elf"/>
@@ -302,8 +315,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Favorite" width="29" height="29"/>
-        <image name="Reply" width="29" height="29"/>
-        <image name="Retweet" width="29" height="29"/>
+        <image name="favorite" width="16" height="16"/>
+        <image name="reply" width="16" height="16"/>
+        <image name="retweet" width="16" height="16"/>
     </resources>
 </document>

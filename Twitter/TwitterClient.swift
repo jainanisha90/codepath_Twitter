@@ -68,27 +68,73 @@ class TwitterClient: BDBOAuth1SessionManager {
                 // print("home timeline:", response)
                 let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
                 completion(tweets, nil)
-                for tweet in tweets {
-                    print("text: \(tweet.text!) created at \(tweet.createdAt!)")
-                }
+//                for tweet in tweets {
+//                    print("text: \(tweet.text!) created at \(tweet.createdAt!)")
+//                }
         }, failure: { (operation: URLSessionDataTask!, error: Error!) -> Void in
             print("Error getting home timeline")
             completion(nil, error)
         })
     }
     
-    func newTweet(tweetMessage: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
-        let params = ["status": tweetMessage]
+    private func sendUpdate(params: Any?, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
         post("1.1/statuses/update.json", parameters: params,
              success: { (operation: URLSessionDataTask, response: Any) in
-            success()
-            //print("newTweet response: ", response)
+                success()
+                //print("newTweet response: ", response)
         }) { (urlSessionDataTask, error) in
             print("Falied to post a tweet")
             failure(error)
         }
     }
     
+    
+    func newTweet(tweetMessage: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        let params = ["status": tweetMessage]
+        sendUpdate(params: params, success: success, failure: failure)
+    }
+    
+    func reply(tweetMessage: String, tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+        let params = ["status": tweetMessage, "in_reply_to_status_id": tweetId]
+        sendUpdate(params: params, success: success, failure: failure)
+    }
+    
+    func retweet(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+        print("tweet API: 1.1/statuses/retweet/:\(tweetId).json")
+        post("1.1/statuses/retweet/:\(tweetId).json", parameters: nil,
+             success: { (operation: URLSessionDataTask, response: Any) in
+                success()
+                //print("retweet response: ", response)
+        }) { (urlSessionDataTask, error) in
+            print("Falied to retweet")
+            failure(error)
+        }
+    }
+    
+    func createFavorite(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+        let params = ["id": tweetId]
+        post("1.1/favorites/create.json", parameters: params,
+             success: { (operation: URLSessionDataTask, response: Any) in
+                success()
+                //print("createFavorite response: ", response)
+        }) { (urlSessionDataTask, error) in
+            print("Falied to create favorite tweet")
+            failure(error)
+        }
+    }
+    
+    func removeFavorite(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+        let params = ["id": tweetId]
+        post("1.1/favorites/destroy.json", parameters: params,
+             success: { (operation: URLSessionDataTask, response: Any) in
+                success()
+                //print("removeFavorite response: ", response)
+        }) { (urlSessionDataTask, error) in
+            print("Falied to remove favorite tweet")
+            failure(error)
+        }
+    }
+
     func handleOpenURL(url: URL) {
         fetchAccessToken(withPath: "oauth/access_token",
                          method: "POST",

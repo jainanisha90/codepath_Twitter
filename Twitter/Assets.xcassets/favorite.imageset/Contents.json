@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Retweet.png",
+      "filename" : "favorite.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Retweet@2x.png",
+      "filename" : "favorite@2x.png",
       "scale" : "2x"
     }
   ],

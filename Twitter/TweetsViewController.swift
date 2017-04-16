@@ -11,7 +11,7 @@ import MBProgressHUD
 
 let reloadHomeTimeline = Notification.Name("reloadHomeTimeline")
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -63,24 +63,35 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         cell.tweet = tweets[indexPath.row]
-        
+        cell.delegate = self
         return cell
         
+    }
+    
+    func tweetCell(tweetCell: TweetCell, onReply reply: String?) {
+        let indexPath = tableView.indexPath(for: tweetCell)
+        let tweet = tweets[(indexPath?.row)!]
+        let tweetAuthor = (tweet.user?.screenName)!
+        let tweetId = tweet.tweetId!
+        let tweetMessage = "@\(tweetAuthor) \(tweet.text!)"
+        print("tweetMessage: ", tweetMessage)
+        self.performSegue(withIdentifier: "replySegue", sender: self)
+
+        
+        TwitterClient.sharedInstance.reply(tweetMessage: tweetMessage, tweetId: tweetId, success: {
+                    }) { (error) in
+            print("Failed to reply", error)
+        }
     }
 
     @IBAction func onLogout(_ sender: Any) {
         TwitterClient.sharedInstance.logout()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+ 
 
 }

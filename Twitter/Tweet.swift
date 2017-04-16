@@ -13,12 +13,14 @@ class Tweet: NSObject {
     var userName: String?
     var text: String?
     var createdAt: String?
+    var tweetId: String?
     
     init(dictionary: NSDictionary) {
         super.init()
         user = User(dictionary: dictionary["user"] as! NSDictionary)
         text = dictionary["text"] as? String
         createdAt = timeSinceTweet((dictionary["created_at"] as? String!)!)
+        tweetId = dictionary["id_str"] as? String
     }
     
     func timeSinceTweet(_ createdAtString: String) -> String {
