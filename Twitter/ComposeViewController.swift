@@ -23,7 +23,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         tweetTextView.delegate = self
         tweetTextView.text = "Type your tweet here..."
         tweetTextView.textColor = .lightGray
-        //tweetTextView.becomeFirstResponder()
+        tweetTextView.becomeFirstResponder()
         
         let currentUser = User.currentUser
         currentUserImageView.setImageWith((currentUser?.profileImageUrl)!)
@@ -59,20 +59,42 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func textViewDidBeginEditing(_ tweetTextView: UITextView) {
-        if tweetTextView.textColor == .lightGray {
-            tweetTextView.text = ""
-            tweetTextView.textColor = .black
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        // Set cursor to the beginning if placeholder is set
+        if textView.textColor == .lightGray {
+            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+        }
+        return true
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // Remove placeholder
+        if textView.textColor == .lightGray && text.characters.count > 0 {
+            textView.text = ""
+            textView.textColor = .black
+        }
+        
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // Set placeholder if text is empty
+        if textView.text.isEmpty {
+            textView.text = "Type your tweet here..."
+            textView.textColor = .lightGray
+            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         }
     }
-
-    func textViewDidEndEditing(_ tweetTextView: UITextView) {
-        if tweetTextView.text == "" {
-            tweetTextView.text = "Type your tweet here..."
-            tweetTextView.textColor = .lightGray
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        // Set cursor to the beginning if placeholder is set
+        let firstPosition = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+        
+        // Do not change position recursively
+        if textView.textColor == .lightGray && textView.selectedTextRange != firstPosition {
+            textView.selectedTextRange = firstPosition
         }
     }
-
     
 
     /*

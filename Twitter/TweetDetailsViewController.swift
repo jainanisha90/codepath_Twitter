@@ -7,12 +7,39 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class TweetDetailsViewController: UIViewController {
 
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var screenNameLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
+    @IBOutlet weak var retweetCountLabel: UILabel!
+    @IBOutlet weak var favoriteCountLabel: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
+    
+    var tweet: Tweet?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        profileImageView.layer.cornerRadius = 3
+        profileImageView.clipsToBounds = true
+        
+        favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState.normal)
+        favoriteButton.setImage(#imageLiteral(resourceName: "favoriteSelected"), for: UIControlState.selected)
+        
+        profileImageView.setImageWith((tweet?.user?.profileImageUrl)!)
+        userNameLabel.text = tweet?.user?.name
+        screenNameLabel.text = tweet?.user?.screenName
+        tweetTextLabel.text = tweet?.text
+        retweetCountLabel.text = String(describing: tweet!.retweetCount!)
+        favoriteCountLabel.text = String(describing: tweet!.favoriteCount!)
+        timestampLabel.text = tweet?.timeStamp
+        
+        favoriteButton.isSelected = tweet!.favorited
         // Do any additional setup after loading the view.
     }
 
@@ -22,14 +49,54 @@ class TweetDetailsViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func onReplyButton(_ sender: Any) {
+        print("Reply button tapped")
     }
-    */
-
+    
+    @IBAction func onRetweetButton(_ sender: Any) {
+        let tweetId = tweet!.tweetId!
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        TwitterClient.sharedInstance.retweet(tweetId: tweetId, success: {
+            self.retweetCountLabel.text =  String(describing: (self.tweet!.retweetCount! + 1))
+            MBProgressHUD.hide(for: self.view, animated: true)
+            NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
+        }, failure: { (error) in
+            print("Error during posting a tweet", error)
+            MBProgressHUD.hide(for: self.view, animated: true)
+        })
+    }
+    
+    @IBAction func onFavoriteButton(_ sender: Any) {
+        let tweetId = tweet!.tweetId!
+        print("tweetID: \(tweetId)")
+        let isFavorite = sender as! UIButton
+        isFavorite.isSelected = !(isFavorite.isSelected)
+        if isFavorite.isSelected {
+            TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {
+                self.tweet?.favoriteCount = self.tweet!.favoriteCount! + 1
+                self.favoriteCountLabel.text =  String(describing: self.tweet!.favoriteCount!)
+                NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
+            }, failure: { (error) in
+                print("Error during posting a tweet", error)
+            })
+        } else {
+            TwitterClient.sharedInstance.removeFavorite(tweetId: tweetId, success: {
+                self.tweet?.favoriteCount = self.tweet!.favoriteCount! - 1
+                self.favoriteCountLabel.text =  String(describing: self.tweet!.favoriteCount!)
+                NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
+            }, failure: { (error) in
+                print("Error during posting a tweet", error)
+            })
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "replyFromDetailSegue" {
+            let navigationController = segue.destination as! UINavigationController
+            let rvc = navigationController.topViewController as! ReplyViewController
+            rvc.tweet = tweet
+        }
+    }
 }

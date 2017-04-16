@@ -31,6 +31,7 @@ class TweetCell: UITableViewCell {
             screenNameLabel.text = "@\(tweet!.user!.screenName!)"
             postTextLabel.text = tweet.text
             createdAtLabel.text = "\(tweet.createdAt!)"
+            favoriteButton.isSelected = tweet.favorited
         }
     }
     

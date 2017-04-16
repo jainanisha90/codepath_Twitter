@@ -13,20 +13,30 @@ class Tweet: NSObject {
     var userName: String?
     var text: String?
     var createdAt: String?
+    var timeStamp: String?
     var tweetId: String?
-    
+    var retweetCount: Int?
+    var favoriteCount: Int?
+    var favorited = false
+
     init(dictionary: NSDictionary) {
         super.init()
         user = User(dictionary: dictionary["user"] as! NSDictionary)
         text = dictionary["text"] as? String
         createdAt = timeSinceTweet((dictionary["created_at"] as? String!)!)
+        retweetCount = dictionary["retweet_count"] as? Int
         tweetId = dictionary["id_str"] as? String
+        favoriteCount = dictionary["favorite_count"] as? Int
+        favorited = dictionary["favorited"] as? Bool ?? false
     }
     
     func timeSinceTweet(_ createdAtString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         let startDate = formatter.date(from: createdAtString)
+        
+        formatter.dateFormat = "M/d/yy, H:mm a"
+        timeStamp = formatter.string(from: startDate!)
         
         let now = Date()
         let components = Calendar.current.dateComponents([.month, .day, .hour, .minute, .second], from: startDate!, to: now)

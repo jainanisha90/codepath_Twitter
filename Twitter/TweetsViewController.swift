@@ -68,6 +68,11 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        self.performSegue(withIdentifier: "tweetDetailsSegue", sender: cell)
+    }
+    
     func tweetCell(tweetCell: TweetCell, onReply reply: String?) {
         self.performSegue(withIdentifier: "replySegue", sender: tweetCell)
     }
@@ -86,15 +91,22 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tweetCell(tweetCell: TweetCell, onFavorite favorite: Bool) {
-        let tweetId = getTweet(tweetCell).tweetId!
+        let tweet = getTweet(tweetCell)
+        let tweetId = tweet.tweetId!
         print("tweetID: \(tweetId)")
         if favorite {
-            TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {},
+            TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {
+                tweet.favorited = favorite
+                tweet.favoriteCount! += 1
+            },
             failure: { (error) in
                 print("Error during posting a tweet", error)
             })
         } else {
-            TwitterClient.sharedInstance.removeFavorite(tweetId: tweetId, success: {},
+            TwitterClient.sharedInstance.removeFavorite(tweetId: tweetId, success: {
+                tweet.favorited = favorite
+                tweet.favoriteCount! -= 1
+            },
             failure: { (error) in
                 print("Error during posting a tweet", error)
             })
@@ -114,13 +126,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "replySegue" {
             let tweet = getTweet(sender as! TweetCell)
-            
             let navigationController = segue.destination as! UINavigationController
             let rvc = navigationController.topViewController as! ReplyViewController
             rvc.tweet = tweet
             
         } else if segue.identifier == "tweetDetailsSegue" {
-            
+            let tweet = getTweet(sender as! TweetCell)
+            let tweetDetailsController = segue.destination as! TweetDetailsViewController
+            tweetDetailsController.tweet = tweet
         }
     }
  
