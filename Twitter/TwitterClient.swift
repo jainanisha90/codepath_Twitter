@@ -68,9 +68,10 @@ class TwitterClient: BDBOAuth1SessionManager {
                 // print("home timeline:", response)
                 let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
                 completion(tweets, nil)
-//                for tweet in tweets {
-//                    print("text: \(tweet.text!) created at \(tweet.createdAt!)")
-//                }
+                print("hometimeline: ", response)
+                //                for tweet in tweets {
+                //                    print("text: \(tweet.text!) created at \(tweet.createdAt!)")
+                //                }
         }, failure: { (operation: URLSessionDataTask!, error: Error!) -> Void in
             print("Error getting home timeline")
             completion(nil, error)
@@ -99,9 +100,9 @@ class TwitterClient: BDBOAuth1SessionManager {
         sendUpdate(params: params, success: success, failure: failure)
     }
     
-    func retweet(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
-        print("tweet API: 1.1/statuses/retweet/:\(tweetId).json")
-        post("1.1/statuses/retweet/:\(tweetId).json", parameters: nil,
+    func retweet(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
+        print("tweet API: 1.1/statuses/retweet/\(tweetId).json")
+        post("1.1/statuses/retweet/\(tweetId).json", parameters: nil,
              success: { (operation: URLSessionDataTask, response: Any) in
                 success()
                 //print("retweet response: ", response)
@@ -111,7 +112,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func createFavorite(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+    func createFavorite(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
         let params = ["id": tweetId]
         post("1.1/favorites/create.json", parameters: params,
              success: { (operation: URLSessionDataTask, response: Any) in
@@ -123,7 +124,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func removeFavorite(tweetId: String, success: @escaping () ->(), failure: @escaping (Error) -> ()) {
+    func removeFavorite(tweetId: String, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
         let params = ["id": tweetId]
         post("1.1/favorites/destroy.json", parameters: params,
              success: { (operation: URLSessionDataTask, response: Any) in
@@ -134,7 +135,7 @@ class TwitterClient: BDBOAuth1SessionManager {
             failure(error)
         }
     }
-
+    
     func handleOpenURL(url: URL) {
         fetchAccessToken(withPath: "oauth/access_token",
                          method: "POST",
@@ -153,5 +154,5 @@ class TwitterClient: BDBOAuth1SessionManager {
             self.loginFailure?(error)
         }
     }
-
+    
 }

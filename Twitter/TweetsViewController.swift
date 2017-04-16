@@ -73,20 +73,47 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tweetCell(tweetCell: TweetCell, onRetweet retweet: String?) {
-        //
+        let tweetId = getTweet(tweetCell).tweetId!
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        TwitterClient.sharedInstance.retweet(tweetId: tweetId, success: {
+            MBProgressHUD.hide(for: self.view, animated: true)
+            NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
+        }, failure: { (error) in
+            print("Error during posting a tweet", error)
+            MBProgressHUD.hide(for: self.view, animated: true)
+        })
     }
     
     func tweetCell(tweetCell: TweetCell, onFavorite favorite: Bool) {
-        //
+        let tweetId = getTweet(tweetCell).tweetId!
+        print("tweetID: \(tweetId)")
+        if favorite {
+            TwitterClient.sharedInstance.createFavorite(tweetId: tweetId, success: {},
+            failure: { (error) in
+                print("Error during posting a tweet", error)
+            })
+        } else {
+            TwitterClient.sharedInstance.removeFavorite(tweetId: tweetId, success: {},
+            failure: { (error) in
+                print("Error during posting a tweet", error)
+            })
+        }
     }
+    
+    private func getTweet(_ tweetCell: TweetCell) -> Tweet {
+        let indexPath = tableView.indexPath(for: tweetCell as UITableViewCell)
+        let tweet = tweets[(indexPath?.row)!]
+        return tweet
+    }
+    
     @IBAction func onLogout(_ sender: Any) {
         TwitterClient.sharedInstance.logout()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "replySegue" {
-            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
-            let tweet = tweets[(indexPath?.row)!]
+            let tweet = getTweet(sender as! TweetCell)
             
             let navigationController = segue.destination as! UINavigationController
             let rvc = navigationController.topViewController as! ReplyViewController
