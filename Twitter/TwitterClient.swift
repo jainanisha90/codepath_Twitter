@@ -68,7 +68,7 @@ class TwitterClient: BDBOAuth1SessionManager {
                 completion(tweets, nil)
                 //print("hometimeline: ", response)
         }, failure: { (operation: URLSessionDataTask!, error: Error!) -> Void in
-            print("Error getting home timeline")
+            print("Error getting home timeline", error)
             completion(nil, error)
         })
     }
