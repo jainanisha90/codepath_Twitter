@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 
 let reloadHomeTimeline = Notification.Name("reloadHomeTimeline")
+let addMyTweetToHomeTimeline = Notification.Name("addMyTweetToHomeTimeline")
 
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate {
 
@@ -37,6 +38,13 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         NotificationCenter.default.addObserver(forName: reloadHomeTimeline, object: nil, queue: OperationQueue.main) { (notification) in
             self.refreshControl.beginRefreshing()
             self.loadHomeTimelineData()
+        }
+        
+        // Adding listener to reload HomeTimeline
+        NotificationCenter.default.addObserver(forName: addMyTweetToHomeTimeline, object: nil, queue: OperationQueue.main) { (notification) in
+            print("got notification addMyTweetToHomeTimeline")
+            self.tweets.insert(notification.object as! Tweet, at: 0)
+            self.tableView.reloadData()
         }
     }
 

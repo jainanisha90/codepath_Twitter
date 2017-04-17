@@ -43,8 +43,10 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
             MBProgressHUD.showAdded(to: self.view, animated: true)
             TwitterClient.sharedInstance.newTweet(tweetMessage: tweetMessage, success: {
                 MBProgressHUD.hide(for: self.view, animated: true)
-                
-                NotificationCenter.default.post(name: reloadHomeTimeline, object: nil)
+
+                // Passing new tweet to tweetsViewController to display on home timeline
+                let newTweet = Tweet(currentUser: User.currentUser, tweetMessage: tweetMessage, createdAt: Date())
+                NotificationCenter.default.post(name: addMyTweetToHomeTimeline, object: newTweet)
                 
                 self.dismiss(animated: true, completion: nil)
             }, failure: { (error) in

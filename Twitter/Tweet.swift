@@ -30,6 +30,15 @@ class Tweet: NSObject {
         favorited = dictionary["favorited"] as? Bool ?? false
     }
     
+    init(currentUser: User?, tweetMessage: String, createdAt: Date) {
+        super.init()
+        user = currentUser
+        text = tweetMessage
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
+        self.createdAt = timeSinceTweet(formatter.string(from: createdAt))
+    }
+    
     func timeSinceTweet(_ createdAtString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
